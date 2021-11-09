@@ -1,6 +1,30 @@
 -- we can mixin more Ace libs here
 AllSeeingEye = LibStub("AceAddon-3.0"):NewAddon("AllSeeingEye", "AceEvent-3.0", "AceConsole-3.0")
 
+local COLORS = { -- https://pixelimperfectdotcom.wordpress.com/2013/09/05/all-world-of-warcraft-hex-color-codes/
+	NORMAL = "|r",
+	GENERAL = "|cfffec1c0",
+	SYSTEM = "|cffffff00",
+	GUILD = "|cff3ce13f",
+	OFFICER = "|cff40bc40",
+	-- ...
+	WHISPER = "|cffff7eff",
+	YELL = "|cffff3f40",
+	-- ...
+	BNET_WHISPER = "|cff00faf6",
+	BNET_CONVERSATION = "|cff00afef",
+	-- ...
+	POOR = "|cff889d9d",
+	COMMON = "|cffffffff",
+	UNCOMMON = "|cff1eff0c",
+	RARE = "|cff0070ff",
+	SUPERIOR = "|cffa335ee",
+	LEGENDARY = "|cffff8000",
+	HEIRLOOM = "|cffe6cc80",
+	-- ...
+	LIGHT_BLUE = "|cff00afef",
+}
+
 local DBI = LibStub("LibDBIcon-1.0")
 
 local AC = LibStub("AceConfig-3.0")
@@ -20,9 +44,9 @@ local AseLDB = LibStub("LibDataBroker-1.1"):NewDataObject("All-Seeing Eye", {
 	end,
 
 	OnTooltipShow = function(tt)
-		tt:AddLine("AllSeeingEye")
-		tt:AddLine("|cffffff00Click|r to toggle the All-Seeing Eye window")
-		tt:AddLine("|cffffff00Right-click|r to open the options menu")
+		tt:AddLine(COLORS.HEIRLOOM .. "AllSeeingEye" .. COLORS.NORMAL)
+		tt:AddLine(COLORS.UNCOMMON .. "Click" .. COLORS.NORMAL .. " to toggle the All-Seeing Eye window")
+		tt:AddLine(COLORS.UNCOMMON .. "Right-click" .. COLORS.NORMAL .. " to open the options menu")
 	end,
 })
 
@@ -76,17 +100,23 @@ function AllSeeingEye:SlashCommand(input, editbox)
 	elseif input == "disable" then
 		-- unregisters all events and calls AllSeeingEye:OnDisable() if you defined that
 		self:Disable()
+	elseif input == "options" then
+		self:ShowConfig()
 	elseif input == "message" then
 		print("this is our saved message:", self.db.profile.someInput)
+
 	elseif input == "toggle" then
-		print("Toggling! Currently Hidden:", self.db.profile.minimap.hide)
 		AllSeeingEye:Toggle()
-		print("Toggled! Currently Hidden:", self.db.profile.minimap.hide)
-	else
-		self:Print("some useful help message")
-		-- https://github.com/Stanzilla/WoWUIBugs/issues/89
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+		local state = "Shown"
+		if self.db.profile.minimap.hide then
+			state = "Hidden"
+		end
+		print(COLORS.HEIRLOOM .. "All-Seeing Eye:" .. COLORS.NORMAL .. state)
+	else -- A R G B -> |caarrggb blsadfjsdhf |r default-text blah
+		self:Print(COLORS.HEIRLOOM .. "All-Seeing Eye" .. COLORS.NORMAL)
+		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. " /allseeingeye [command]")
+		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. "  /ase [command]")
+		self:Print(COLORS.UNCOMMON .. "Commands:" .. COLORS.NORMAL .. " enable disable options toggle message")
 	end
 end
 
@@ -104,6 +134,7 @@ function AllSeeingEye:UpdateMinimap()
 end
 
 function AllSeeingEye:ShowConfig()
+	-- https://github.com/Stanzilla/WoWUIBugs/issues/89
 	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
 	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
 end
