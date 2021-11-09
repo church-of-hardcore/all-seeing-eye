@@ -31,11 +31,12 @@ local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
 
 local AseLDB = LibStub("LibDataBroker-1.1"):NewDataObject("All-Seeing Eye", {
-    type = "data source",
-    text = "All-Seeing Eye Text",
-    icon = "Interface\\Icons\\INV_Chest_Cloth_17",
-    OnClick = function(clicked_frame, button)
-		if button == "RightButton" then	
+	type = "data source",
+	text = "All-Seeing Eye Text",
+	-- icon = "Interface\\Icons\\INV_Chest_Cloth_17",
+	icon = "Interface\\Icons\\spell_shadow_unholyfrenzy",
+	OnClick = function(clicked_frame, button)
+		if button == "RightButton" then
 			AllSeeingEye:ShowConfig()
 		else
 			-- AllSeeingEye:Toggle()
@@ -55,7 +56,13 @@ local icon = LibStub("LibDBIcon-1.0")
 function AllSeeingEye:OnInitialize()
 	-- uses the "Default" profile instead of character-specific profiles
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
-	self.db = LibStub("AceDB-3.0"):New("AllSeeingEyeDB", { profile = { minimap = { hide = false, }, }, })	
+	self.db = LibStub("AceDB-3.0"):New("AllSeeingEyeDB", {
+		profile = {
+			minimap = {
+				hide = false,
+			},
+		},
+	})
 	icon:Register("AllSeeingEye", AseLDB, self.db.profile.minimap)
 
 	-- registers an options table and adds it to the Blizzard options window
@@ -108,9 +115,7 @@ function AllSeeingEye:SlashCommand(input, editbox)
 	elseif input == "toggle" then
 		AllSeeingEye:Toggle()
 		local state = "Shown"
-		if self.db.profile.minimap.hide then
-			state = "Hidden"
-		end
+		if self.db.profile.minimap.hide then state = "Hidden" end
 		print(COLORS.HEIRLOOM .. "All-Seeing Eye:" .. COLORS.NORMAL .. state)
 	else -- A R G B -> |caarrggb blsadfjsdhf |r default-text blah
 		self:Print(COLORS.HEIRLOOM .. "All-Seeing Eye" .. COLORS.NORMAL)

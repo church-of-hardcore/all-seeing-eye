@@ -19,7 +19,9 @@ AllSeeingEye.options = {
 			name = "Hide Mini-map",
 			desc = "Hide the Mini-map Icon?",
 			-- inline getter/setter example
-			get = function(info) return AllSeeingEye.db.profile.minimap.hide end,
+			get = function(info)
+				return AllSeeingEye.db.profile.minimap.hide
+			end,
 			set = function(info, value)
 				AllSeeingEye.db.profile.minimap.hide = value
 				AllSeeingEye:UpdateMinimap()
@@ -31,8 +33,12 @@ AllSeeingEye.options = {
 			name = "a checkbox",
 			desc = "some description",
 			-- inline getter/setter example
-			get = function(info) return AllSeeingEye.db.profile.someToggle end,
-			set = function(info, value) AllSeeingEye.db.profile.someToggle = value end,
+			get = function(info)
+				return AllSeeingEye.db.profile.someToggle
+			end,
+			set = function(info, value)
+				AllSeeingEye.db.profile.someToggle = value
+			end,
 		},
 		someRange = {
 			type = "range",
@@ -41,7 +47,9 @@ AllSeeingEye.options = {
 			-- this will look for a getter/setter on our handler object
 			get = "GetSomeRange",
 			set = "SetSomeRange",
-			min = 1, max = 10, step = 1,
+			min = 1,
+			max = 10,
+			step = 1,
 		},
 		group1 = {
 			type = "group",
@@ -61,7 +69,9 @@ AllSeeingEye.options = {
 				someDescription = {
 					type = "description",
 					order = 2,
-					name = function() return format("The current time is: |cff71d5ff%s|r", date("%X")) end,
+					name = function()
+						return format("The current time is: |cff71d5ff%s|r", date("%X"))
+					end,
 					fontSize = "large",
 				},
 				someSelect = {
