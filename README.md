@@ -14,4 +14,6 @@ This addon provides data integration with the **Hardhead** website (coming soon)
  - Open Main GUI Window with LMB on Mini-map Icon (treat as RMB until GUI is ready)
 
 #### Next:
-
+ - Port the 'String Exporter' dialog you wrote for Hardcore to All-Seeing Eye
+ - Create custom Layout for StringExporter to include simple verifiable difference
+ - Customise Layout further, adding header image, appropriate positioning and perfect re-size behaviour
