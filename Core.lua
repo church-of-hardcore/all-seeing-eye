@@ -30,6 +30,8 @@ local DBI = LibStub("LibDBIcon-1.0")
 local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
 
+local AceGUI = LibStub("AceGUI-3.0")
+
 local AseLDB = LibStub("LibDataBroker-1.1"):NewDataObject("All-Seeing Eye", {
 	type = "data source",
 	text = "All-Seeing Eye Text",
@@ -40,7 +42,7 @@ local AseLDB = LibStub("LibDataBroker-1.1"):NewDataObject("All-Seeing Eye", {
 			AllSeeingEye:ShowConfig()
 		else
 			-- AllSeeingEye:Toggle()
-			AllSeeingEye:ShowConfig()
+			AllSeeingEye:MainWindow()
 		end
 	end,
 
@@ -75,6 +77,11 @@ function AllSeeingEye:OnInitialize()
 	AC:RegisterOptionsTable("AllSeeingEye_Profiles", profiles)
 	ACD:AddToBlizOptions("AllSeeingEye_Profiles", "Profiles", "AllSeeingEye_Options")
 
+	self.AceGUI = AceGUI
+
+	-- define other useful booleans for now
+	self.main_window_exists = false
+
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-console-3-0
 	self:RegisterChatCommand("ase", "SlashCommand")
 	self:RegisterChatCommand("allseeingeye", "SlashCommand")
@@ -104,23 +111,27 @@ end
 function AllSeeingEye:SlashCommand(input, editbox)
 	if input == "enable" then
 		self:Enable()
+
 	elseif input == "disable" then
 		-- unregisters all events and calls AllSeeingEye:OnDisable() if you defined that
 		self:Disable()
+
 	elseif input == "options" then
 		self:ShowConfig()
+
 	elseif input == "message" then
-		print("this is our saved message:", self.db.profile.someInput)
+		self:Print(COLORS.HEIRLOOM .. "Stored Message: " .. COLORS.NORMAL .. self.db.profile.someInput)
 
 	elseif input == "toggle" then
 		AllSeeingEye:Toggle()
 		local state = "Shown"
 		if self.db.profile.minimap.hide then state = "Hidden" end
 		print(COLORS.HEIRLOOM .. "All-Seeing Eye:" .. COLORS.NORMAL .. state)
+
 	else -- A R G B -> |caarrggb blsadfjsdhf |r default-text blah
 		self:Print(COLORS.HEIRLOOM .. "All-Seeing Eye" .. COLORS.NORMAL)
 		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. " /allseeingeye [command]")
-		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. "  /ase [command]")
+		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. " /ase [command]")
 		self:Print(COLORS.UNCOMMON .. "Commands:" .. COLORS.NORMAL .. " enable disable options toggle message")
 	end
 end

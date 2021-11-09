@@ -30,3 +30,5 @@ Libs\AceSerializer-3.0\AceSerializer-3.0.xml
 
 Core.lua
 Options.lua
+Dialogs.lua
+

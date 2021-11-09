@@ -1,5 +1,6 @@
 AllSeeingEye.defaults = {
 	profile = {
+		hideMinimapToggle = false,
 		someToggle = true,
 		someRange = 7,
 		someInput = "Hello World",
@@ -13,7 +14,7 @@ AllSeeingEye.options = {
 	name = "AllSeeingEye",
 	handler = AllSeeingEye,
 	args = {
-		minimapToggle = {
+		hideMinimapToggle = {
 			type = "toggle",
 			order = 1,
 			name = "Hide Mini-map",
@@ -63,7 +64,7 @@ AllSeeingEye.options = {
 				someInput = {
 					type = "input",
 					order = 1,
-					name = "an input box",
+					name = "message input box - retrieve using: /ase message",
 					width = "double",
 				},
 				someDescription = {

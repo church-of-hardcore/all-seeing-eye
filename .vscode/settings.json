@@ -1,6 +1,7 @@
 {
 	"Lua.diagnostics.globals": [
 		"LibStub",
-		"InterfaceOptionsFrame_OpenToCategory"
+		"InterfaceOptionsFrame_OpenToCategory",
+		"AceGUI"
 	]
 }
