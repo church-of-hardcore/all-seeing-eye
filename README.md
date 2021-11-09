@@ -12,6 +12,7 @@ This addon provides data integration with the **Hardhead** website (coming soon)
  - Tool-tip for enabled/disabled
  - Open Interace Options -> AddOns -> All-Seeing Eye with RMB on Mini-map Icon
  - Open Main GUI Window with LMB on Mini-map Icon (treat as RMB until GUI is ready)
+ - Add colour support for simplifying UI
 
 #### Next:
  - Port the 'String Exporter' dialog you wrote for Hardcore to All-Seeing Eye
