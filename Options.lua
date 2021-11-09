@@ -10,7 +10,7 @@ AllSeeingEye.defaults = {
 -- https://www.wowace.com/projects/ace3/pages/ace-config-3-0-options-tables
 AllSeeingEye.options = {
 	type = "group",
-	name = "AllSeeingEye (2)",
+	name = "AllSeeingEye",
 	handler = AllSeeingEye,
 	args = {
 		someToggle = {

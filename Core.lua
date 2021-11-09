@@ -12,7 +12,7 @@ function AllSeeingEye:OnInitialize()
 	-- registers an options table and adds it to the Blizzard options window
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-config-registry-3-0
 	AC:RegisterOptionsTable("AllSeeingEye_Options", self.options)
-	self.optionsFrame = ACD:AddToBlizOptions("AllSeeingEye_Options", "All-Seeing Eye (1)")
+	self.optionsFrame = ACD:AddToBlizOptions("AllSeeingEye_Options", "All-Seeing Eye")
 
 	-- adds a child options table, in this case our profiles panel
 	local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
