@@ -13,9 +13,21 @@ AllSeeingEye.options = {
 	name = "AllSeeingEye",
 	handler = AllSeeingEye,
 	args = {
-		someToggle = {
+		minimapToggle = {
 			type = "toggle",
 			order = 1,
+			name = "Hide Mini-map",
+			desc = "Hide the Mini-map Icon?",
+			-- inline getter/setter example
+			get = function(info) return AllSeeingEye.db.profile.minimap.hide end,
+			set = function(info, value)
+				AllSeeingEye.db.profile.minimap.hide = value
+				AllSeeingEye:UpdateMinimap()
+			end,
+		},
+		someToggle = {
+			type = "toggle",
+			order = 2,
 			name = "a checkbox",
 			desc = "some description",
 			-- inline getter/setter example
@@ -24,7 +36,7 @@ AllSeeingEye.options = {
 		},
 		someRange = {
 			type = "range",
-			order = 2,
+			order = 3,
 			name = "a slider",
 			-- this will look for a getter/setter on our handler object
 			get = "GetSomeRange",
@@ -33,7 +45,7 @@ AllSeeingEye.options = {
 		},
 		group1 = {
 			type = "group",
-			order = 3,
+			order = 4,
 			name = "a group",
 			inline = true,
 			-- getters/setters can be inherited through the table tree

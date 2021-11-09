@@ -34,6 +34,7 @@ function AllSeeingEye:OnInitialize()
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-console-3-0
 	self:RegisterChatCommand("ase", "SlashCommand")
 	self:RegisterChatCommand("allseeingeye", "SlashCommand")
+	self:RegisterChatCommand("bunnies", "CommandTheBunnies")
 
 	self:GetCharacterInfo()
 end
@@ -65,6 +66,10 @@ function AllSeeingEye:SlashCommand(input, editbox)
 		self:Disable()
 	elseif input == "message" then
 		print("this is our saved message:", self.db.profile.someInput)
+	elseif input == "toggle" then
+		print("Toggling! Currently Hidden:", self.db.profile.minimap.hide)
+		AllSeeingEye:ToggleMinimap()
+		print("Toggled! Currently Hidden:", self.db.profile.minimap.hide)
 	else
 		self:Print("some useful help message")
 		-- https://github.com/Stanzilla/WoWUIBugs/issues/89
@@ -72,3 +77,17 @@ function AllSeeingEye:SlashCommand(input, editbox)
 		InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
 	end
 end
+
+function AllSeeingEye:ToggleMinimap()
+	self.db.profile.minimap.hide = not self.db.profile.minimap.hide
+	AllSeeingEye:UpdateMinimap()
+end
+
+function AllSeeingEye:UpdateMinimap()
+	if self.db.profile.minimap.hide then
+		icon:Hide("AllSeeingEye")
+	else
+		icon:Show("AllSeeingEye")
+	end
+end
+
