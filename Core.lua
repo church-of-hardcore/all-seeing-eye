@@ -91,17 +91,17 @@ end
 
 function AllSeeingEye:OnEnable()
 	self:RegisterEvent("PLAYER_STARTED_MOVING")
-	self:RegisterEvent("CHAT_MSG_CHANNEL")
+	-- self:RegisterEvent("CHAT_MSG_CHANNEL")
 end
 
 function AllSeeingEye:PLAYER_STARTED_MOVING(event)
 	print(event)
 end
 
-function AllSeeingEye:CHAT_MSG_CHANNEL(event, text, ...)
+--[[ function AllSeeingEye:CHAT_MSG_CHANNEL(event, text, ...)
 	-- prints the whole event payload
 	print(event, text, ...)
-end
+end ]]
 
 function AllSeeingEye:GetCharacterInfo()
 	-- stores character-specific data
