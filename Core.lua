@@ -1,13 +1,25 @@
 -- we can mixin more Ace libs here
 AllSeeingEye = LibStub("AceAddon-3.0"):NewAddon("AllSeeingEye", "AceEvent-3.0", "AceConsole-3.0")
 
+local DBI = LibStub("LibDBIcon-1.0")
+
 local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
+
+local AseLDB = LibStub("LibDataBroker-1.1"):NewDataObject("All-Seeing Eye", {
+    type = "data source",
+    text = "All-Seeing Eye Text",
+    icon = "Interface\\Icons\\INV_Chest_Cloth_17",
+    OnClick = function() print("THE EYE IS WATCHING YOU") end,
+})
+
+local icon = LibStub("LibDBIcon-1.0")
 
 function AllSeeingEye:OnInitialize()
 	-- uses the "Default" profile instead of character-specific profiles
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
-	self.db = LibStub("AceDB-3.0"):New("AllSeeingEyeDB", self.defaults, true)
+	self.db = LibStub("AceDB-3.0"):New("AllSeeingEyeDB", { profile = { minimap = { hide = false, }, }, })	
+	icon:Register("AllSeeingEye", AseLDB, self.db.profile.minimap)
 
 	-- registers an options table and adds it to the Blizzard options window
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-config-registry-3-0
