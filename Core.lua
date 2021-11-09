@@ -10,7 +10,20 @@ local AseLDB = LibStub("LibDataBroker-1.1"):NewDataObject("All-Seeing Eye", {
     type = "data source",
     text = "All-Seeing Eye Text",
     icon = "Interface\\Icons\\INV_Chest_Cloth_17",
-    OnClick = function() print("THE EYE IS WATCHING YOU") end,
+    OnClick = function(clicked_frame, button)
+		if button == "RightButton" then	
+			AllSeeingEye:ShowConfig()
+		else
+			-- AllSeeingEye:Toggle()
+			AllSeeingEye:ShowConfig()
+		end
+	end,
+
+	OnTooltipShow = function(tt)
+		tt:AddLine("AllSeeingEye")
+		tt:AddLine("|cffffff00Click|r to toggle the All-Seeing Eye window")
+		tt:AddLine("|cffffff00Right-click|r to open the options menu")
+	end,
 })
 
 local icon = LibStub("LibDBIcon-1.0")
@@ -34,7 +47,6 @@ function AllSeeingEye:OnInitialize()
 	-- https://www.wowace.com/projects/ace3/pages/api/ace-console-3-0
 	self:RegisterChatCommand("ase", "SlashCommand")
 	self:RegisterChatCommand("allseeingeye", "SlashCommand")
-	self:RegisterChatCommand("bunnies", "CommandTheBunnies")
 
 	self:GetCharacterInfo()
 end
@@ -68,7 +80,7 @@ function AllSeeingEye:SlashCommand(input, editbox)
 		print("this is our saved message:", self.db.profile.someInput)
 	elseif input == "toggle" then
 		print("Toggling! Currently Hidden:", self.db.profile.minimap.hide)
-		AllSeeingEye:ToggleMinimap()
+		AllSeeingEye:Toggle()
 		print("Toggled! Currently Hidden:", self.db.profile.minimap.hide)
 	else
 		self:Print("some useful help message")
@@ -78,7 +90,7 @@ function AllSeeingEye:SlashCommand(input, editbox)
 	end
 end
 
-function AllSeeingEye:ToggleMinimap()
+function AllSeeingEye:Toggle()
 	self.db.profile.minimap.hide = not self.db.profile.minimap.hide
 	AllSeeingEye:UpdateMinimap()
 end
@@ -91,3 +103,7 @@ function AllSeeingEye:UpdateMinimap()
 	end
 end
 
+function AllSeeingEye:ShowConfig()
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+end
