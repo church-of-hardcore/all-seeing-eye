@@ -16,6 +16,6 @@ This addon provides data integration with the **Hardhead** website (coming soon)
  - Add rough base GUI Window
 
 #### Next:
- - Create custom Layout for GUI Window to include simple verifiable difference
- - Customise Layout further, adding header image, appropriate positioning and perfect re-size behaviour
+ - DESTINATION: Armory
+ - On-Demand String Exporter (gathers copies of everything, builds string)
  - Version string / slash command
