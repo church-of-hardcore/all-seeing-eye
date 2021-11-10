@@ -3,6 +3,12 @@
 		"LibStub",
 		"InterfaceOptionsFrame_OpenToCategory",
 		"AceGUI",
-		"GameFontNormalHuge"
+		"GameFontNormalHuge",
+		"UISpecialFrames",
+		"GameFontNormalLarge"
+	],
+	"Lua.diagnostics.disable": [
+		"unused-function",
+		"redundant-parameter"
 	]
 }
