@@ -1,5 +1,6 @@
 -- we can mixin more Ace libs here
 AllSeeingEye = LibStub("AceAddon-3.0"):NewAddon("AllSeeingEye", "AceEvent-3.0", "AceConsole-3.0")
+LibStub:GetLibrary('LibWho-2.0'):Embed(AllSeeingEye)
 
 local COLORS = { -- https://pixelimperfectdotcom.wordpress.com/2013/09/05/all-world-of-warcraft-hex-color-codes/
 	NORMAL = "|r",
@@ -24,6 +25,8 @@ local COLORS = { -- https://pixelimperfectdotcom.wordpress.com/2013/09/05/all-wo
 	-- ...
 	LIGHT_BLUE = "|cff00afef",
 }
+
+AllSeeingEye.COLORS = COLORS
 
 local DBI = LibStub("LibDBIcon-1.0")
 
@@ -63,6 +66,14 @@ function AllSeeingEye:OnInitialize()
 			minimap = {
 				hide = false,
 			},
+			eventpuncher = {
+				enabled = true,
+			},
+			guildinviter = {
+				primary = "Hardcore",
+				secondary = "Mortal",
+				tertiary = "HC Elite",
+			},
 		},
 	})
 	icon:Register("AllSeeingEye", AseLDB, self.db.profile.minimap)
@@ -87,6 +98,14 @@ function AllSeeingEye:OnInitialize()
 	self:RegisterChatCommand("allseeingeye", "SlashCommand")
 
 	self:GetCharacterInfo()
+
+	local hookWorldClicks = self.db.profile.eventpuncher.enabled
+	
+		if hookWorldClicks then
+			WorldFrame:HookScript("OnMouseDown", function(self,button)
+				LibStub('LibWho-2.0'):AskWhoNext()
+			end)
+		end
 end
 
 function AllSeeingEye:OnEnable()
@@ -95,7 +114,8 @@ function AllSeeingEye:OnEnable()
 end
 
 function AllSeeingEye:PLAYER_STARTED_MOVING(event)
-	print(event)
+	-- print(event)
+	-- LibStub('LibWho-2.0'):AskWhoNext()
 end
 
 --[[ function AllSeeingEye:CHAT_MSG_CHANNEL(event, text, ...)
@@ -119,20 +139,24 @@ function AllSeeingEye:SlashCommand(input, editbox)
 	elseif input == "options" then
 		self:ShowConfig()
 
-	elseif input == "message" then
-		self:Print(COLORS.HEIRLOOM .. "Stored Message: " .. COLORS.NORMAL .. self.db.profile.someInput)
-
 	elseif input == "toggle" then
 		AllSeeingEye:Toggle()
 		local state = "Shown"
 		if self.db.profile.minimap.hide then state = "Hidden" end
-		print(COLORS.HEIRLOOM .. "All-Seeing Eye:" .. COLORS.NORMAL .. state)
+		print(self.COLORS.HEIRLOOM .. "All-Seeing Eye:" .. self.COLORS.NORMAL .. state)
 
-	else -- A R G B -> |caarrggb blsadfjsdhf |r default-text blah
-		self:Print(COLORS.HEIRLOOM .. "All-Seeing Eye" .. COLORS.NORMAL)
-		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. " /allseeingeye [command]")
-		self:Print(COLORS.LIGHT_BLUE .. "Syntax:" .. COLORS.NORMAL .. " /ase [command]")
-		self:Print(COLORS.UNCOMMON .. "Commands:" .. COLORS.NORMAL .. " enable disable options toggle message")
+	-- testing code for guild inviter
+	elseif input == "ginv" then
+		print(self.COLORS.HEIRLOOM .. "All-Seeing Eye:" .. self.COLORS.NORMAL .. 'Hunting Rabbits...')
+		AllSeeingEye:GetUserData()
+
+	-- end testing code
+
+	else -- A R G B -> |caarrggb colored-text |r default-text blah
+		self:Print(self.COLORS.HEIRLOOM .. "All-Seeing Eye" .. self.COLORS.NORMAL)
+		self:Print(self.COLORS.LIGHT_BLUE .. "Syntax:" .. self.COLORS.NORMAL .. " /allseeingeye [command]")
+		self:Print(self.COLORS.LIGHT_BLUE .. "Syntax:" .. self.COLORS.NORMAL .. " /ase [command]")
+		self:Print(self.COLORS.UNCOMMON .. "Commands:" .. self.COLORS.NORMAL .. " enable disable options toggle ginv")
 	end
 end
 
@@ -154,3 +178,79 @@ function AllSeeingEye:ShowConfig()
 	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
 	InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
 end
+
+--[[
+
+The goal is to allow the player to activate one of two main functions:
+ - join calculated/assigned guild from the field of HC guilds, or
+ - join a specific guild from the same field instead
+
+Regardless of which of the above we are catering for (or the method used to decide which
+is the correct guild), we need do or know the following:
+ - what are the blessed guilds for this server? what if there's only one?
+ - get list of players online in a guild
+ - message a random player from the list
+ - automatically respond to requests for 'invite to guild'
+
+ Initial goal: get a /who for a known guild
+
+]]
+
+function AllSeeingEye:UpdateEventPumper()
+	print("UpdateEventPumper")
+end
+
+-- set up the queue puncher
+function AllSeeingEye:InitQueuePuncher()
+	--  Set up an empty frame for updates
+	self.updateFrame = CreateFrame("Frame")
+	self.updateFrame:SetScript("OnUpdate", AllSeeingEye.QueuePuncher_OnUpdate)
+
+	--[[ CensusPlusWhoButton:SetScript("OnClick",
+		function(self, button, down)
+			-- As we have not specified the button argument to SetBindingClick,
+			-- the binding will be mapped to a LeftButton click.
+			AllSeeingEye:AskWhoNext()
+		end
+	) ]]
+end
+
+-- handler for OnUpdate event: NO SELF
+function AllSeeingEye.QueuePuncher_OnUpdate()
+	-- print(AllSeeingEye.COLORS.HEIRLOOM .. "All-Seeing Eye:" .. AllSeeingEye.COLORS.NORMAL .. 'ONUPDATE SEASON!...')
+	LibStub('LibWho-2.0'):AskWhoNext()
+end
+
+-- perform a lookup of the active player
+function AllSeeingEye:GetUserData(name)
+	print(self.COLORS.HEIRLOOM .. "All-Seeing Eye:" .. self.COLORS.NORMAL .. 'Duck Season!...')
+	if (name == nil) or (name == '') then
+		name, _ = UnitName("player")
+	end
+	print ("Now hunting...", name)
+	local user, time = self:UserInfo(name, { callback = 'UserDataReturned' } )
+	if user then
+		-- the data was immediately available
+		print ("FOUND: ", user, " at ", time)
+		self:UserDataReturned(user, time)
+	else
+		-- nothing
+		-- we will be called when the data is available
+	end
+end
+
+-- callback function
+function AllSeeingEye:UserDataReturned(user, time)
+	print("User data returned via callback:" .. user.Name)
+	local state
+	if user.Online == true then
+		state = 'Online'
+	elseif user.Online == false then
+		state = 'Offline'
+	else
+		-- user.Online is nil
+		state = 'Unknown'
+	end
+	DEFAULT_CHAT_FRAME:AddMessage(user.Name .. ' is ' .. state)
+end
+

@@ -1,7 +1,9 @@
+local AllSeeingEye = LibStub("AceAddon-3.0"):GetAddon("AllSeeingEye")
+
 AllSeeingEye.defaults = {
 	profile = {
 		hideMinimapToggle = false,
-		someToggle = true,
+		eventPumper = true,
 		someRange = 7,
 		someInput = "Hello World",
 		someSelect = 2, -- Banana
@@ -28,17 +30,18 @@ AllSeeingEye.options = {
 				AllSeeingEye:UpdateMinimap()
 			end,
 		},
-		someToggle = {
+		eventPumper = {
 			type = "toggle",
 			order = 2,
-			name = "a checkbox",
-			desc = "some description",
+			name = "Enable Event Pumper",
+			desc = "If enabled, the internal LibWho system will hook clicks on the game world to drive events",
 			-- inline getter/setter example
 			get = function(info)
-				return AllSeeingEye.db.profile.someToggle
+				return AllSeeingEye.db.profile.eventpumper.enabled
 			end,
 			set = function(info, value)
-				AllSeeingEye.db.profile.someToggle = value
+				AllSeeingEye.db.profile.eventpumper.enabled = value
+				AllSeeingEye:UpdateEventPumper()
 			end,
 		},
 		someRange = {
@@ -52,9 +55,38 @@ AllSeeingEye.options = {
 			max = 10,
 			step = 1,
 		},
-		group1 = {
+		guilds = {
 			type = "group",
 			order = 4,
+			name = "Guilds",
+			inline = true,
+			-- getters/setters can be inherited through the table tree
+			get = "GetValue",
+			set = "SetValue",
+			args = {
+				primaryInput = {
+					type = "input",
+					order = 1,
+					name = "Primary Guild:",
+					width = "double",
+				},
+				secondaryInput = {
+					type = "input",
+					order = 2,
+					name = "Secondary Guild:",
+					width = "double",
+				},
+				ternaryInput = {
+					type = "input",
+					order = 3,
+					name = "Tertiary Guild",
+					width = "double",
+				},
+			},
+		},
+		group1 = {
+			type = "group",
+			order = 5,
 			name = "a group",
 			inline = true,
 			-- getters/setters can be inherited through the table tree

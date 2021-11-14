@@ -1,7 +1,7 @@
-## Interface: 11400
+## Interface: 11401
 ## Version: 0.0.1
 ## Title: All-Seeing Eye by Church of Hardcore
-## Notes: Waits, watches and reports to Hardhead
+## Notes: Waits, watches and reports to https://hardhead.io
 ## Author: zdeyn, i.am.zdeyn@gmail.com
 ## X-License: All Rights Reserved
 ## X-Category: Leveling
@@ -28,7 +28,9 @@ Libs\AceComm-3.0\AceComm-3.0.xml
 Libs\AceTab-3.0\AceTab-3.0.xml
 Libs\AceSerializer-3.0\AceSerializer-3.0.xml
 
+Libs\LibWho-2.0\LibWho-2.0.lua
+
 Core.lua
 Options.lua
 Dialogs.lua
-
+## GuildInviter.lua
